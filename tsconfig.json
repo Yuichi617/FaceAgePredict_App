@@ -1,0 +1,41 @@
+{
+    "compilerOptions": {
+        // TSはECMAScript5に変換
+        "target": "es5",
+        "lib": [
+            "ES2020",
+            "DOM"
+        ],
+        
+        // TSのモジュールはES Modulesとして出力
+        "module": "esnext",
+
+        // JSXの書式を有効に設定
+        "jsx": "react",
+    
+        /* ファイル名の大文字小文字を区別 */
+        "forceConsistentCasingInFileNames": true,
+    
+        /* 型チェック関係のオプション */
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true, // nullとundefinedを他の型の値として扱えないようにする
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+    
+        /* Module解決方法 */
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "allowSyntheticDefaultImports": true,
+    
+        "typeRoots": [
+            "node_modules/@types",
+            "@types" // 自作の型定義ファイルも読み込む
+        ],
+        },
+    /* tscコマンドで読み込むファイルを指定 */
+    "include": ["src/**/*", "@types/**/*"],
+    "exclude": ["node_modules"]
+}
