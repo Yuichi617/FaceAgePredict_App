@@ -31,6 +31,18 @@ module.exports = {
                   },
                 ],
             },
+            { // 画像ファイルのパスを管理
+                test: /\.(png|jpe?g|gif|svg)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: { 
+                            name: '[name].[ext]',
+                            outputPath : 'images/',
+                        },
+                    },
+                ],
+            },
         ]
     },
     plugins: [ 

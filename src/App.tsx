@@ -1,15 +1,20 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import './css/reset.css'
 import './css/style.css'
+import NoImage from './images/no_image.jpg'
 
 const App = () => {
 
     const [send_img, setImage] = useState<File>()
+    const [preview, setPreview] = useState<string>(NoImage)
+    const [pre_age, setPreAge] = useState<String>("???")
 
     var onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if(!e.target.files) return // filesがnullとなる可能性を消す
+        if(!e.target.files) return
         const img: File = e.target.files[0];
         setImage(img);
+
+        setPreview(window.URL.createObjectURL(img));
     }
 
     var sendImg = (): void => {
@@ -31,7 +36,6 @@ const App = () => {
                 console.log(responseJson)
             })
         } else { // 画像データをAPI(Flask)へ送信
-
             // requestの作成
             const url = "http://127.0.0.1:8080/face-age-predict"
             const requestOptions ={
@@ -43,19 +47,32 @@ const App = () => {
             //　request送信、response処理
             fetch(url, requestOptions
                 ).then(response => response.json()
-                ).then(data => {console.log(data);}
+                ).then(data => {
+                    console.log(data);
+                    setPreAge(String(data.prediction))}
                 ).catch((error)=>{console.error(error);
                 });
         }
     }
 
+    useEffect(() => {
+        console.log("preage: " + pre_age);
+    }, [pre_age]);
+
     return (
-        <div>
-            <div>
-                <label>アップロードするファイルを選択してください</label>
-                <input type='file' accept="image/*" onChange={onFileInputChange}/>
+        <div className="main-container">
+            <h1>Face-age Prediction</h1>
+            <div className="wrapper_3">
+                <p>推定年齢: {pre_age}歳</p>
             </div>
-            <div>
+            <div className="wrapper_1">
+                <img src={preview} />
+                <p>アップロードするファイルを選択してください(フォーマット: jpg、png)</p>
+                <div className="input_btn">
+                    <input type='file' accept="image/*" onChange={onFileInputChange}/>
+                </div>
+            </div>
+            <div className="wrapper_2">
                 <button onClick={sendImg}>送信</button>
             </div>
         </div>
